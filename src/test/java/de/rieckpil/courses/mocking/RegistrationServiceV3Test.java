@@ -24,5 +24,8 @@ class RegistrationServiceV3Test {
 
   @Test
   void shouldRegisterUnknownUser() {
+    System.out.println(userRepository.getClass());
+    System.out.println(bannedUsersClient.getClass());
+    System.out.println(cut.toString());
   }
 }

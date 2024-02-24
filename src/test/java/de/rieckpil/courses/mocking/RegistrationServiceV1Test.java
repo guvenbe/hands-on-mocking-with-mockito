@@ -15,6 +15,16 @@ class RegistrationServiceV1Test {
 
   @Test
   void shouldRegisterUnknownUser() {
+    UserRepository realUserRepository = new JpaUserRepository();
+
+    System.out.println(realUserRepository.toString());
+    System.out.println(realUserRepository.getClass());
+
+    System.out.println(userRepository.toString());
+    System.out.println(userRepository.getClass());
+
+    System.out.println(bannedUsersClient.toString());
+    System.out.println(bannedUsersClient.getClass());
   }
 
 }
