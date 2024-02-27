@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.mockStatic;
 import static org.mockito.Mockito.when;
 
 // since 3.4.0
@@ -33,5 +34,25 @@ class StaticMethodMockTest {
 
   @Test
   void mockStaticMethod() {
+    System.out.println(LocalDateTime.now());
+    try(MockedStatic<LocalDateTime> mockedLocalDateTime = mockStatic(LocalDateTime.class))
+    {
+      mockedLocalDateTime.when(LocalDateTime::now).thenReturn(defaultLocalDateTime);
+      when(bannedUsersClient
+        .isBanned(eq("duke"), any(Address.class)))
+        .thenReturn(false);
+      when(userRepository.findByUsername("duke"))
+        .thenReturn(null);
+      when(userRepository.save(any(User.class)))
+        .thenAnswer(invocation -> {
+          User user = invocation.getArgument(0);
+          user.setId(42L);
+          return user;
+        });
+      cut.registerUser("duke", Utils.createContactInformation("duke@mockito.orgg"));
+      assertEquals(defaultLocalDateTime, LocalDateTime.now());
+    }
+
+
   }
 }
